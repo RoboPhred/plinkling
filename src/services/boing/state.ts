@@ -40,7 +40,7 @@ export const defaultBoingServiceState: Readonly<
     a: {
       id: "a",
       p1: {
-        x: 0,
+        x: -100,
         y: 800
       },
       p2: {

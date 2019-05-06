@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import { first } from "lodash-es";
 
-import { add, scale, Line, intercept, Vector2 } from "@/math";
+import { add, scale, Line, intercept, length, Vector2 } from "@/math";
 import { mapOrRemove, isNotNull } from "@/utils";
 import { values } from "@/identity";
 
@@ -38,29 +38,25 @@ function tickBall(
 ): BallState | null {
   const { gravity, fieldSize } = state;
 
-  const removeThresh = scale(fieldSize, 1.1);
-
   let velocity = add(ball.velocity, scale(gravity, millisElapsed));
   let position = add(ball.position, velocity);
 
-  if (position.x > removeThresh.x || position.y > removeThresh.y) {
+  if (position.x < 0 || position.x > fieldSize.x || position.y > fieldSize.y) {
     return null;
   }
 
   // Trace a line from the ball's previous position to the
   //  current position, then see if it intercepts a bouncer
-  const intercept = interceptBouncer(
-    { p1: ball.position, p2: position },
-    state
-  );
+  const movementLine: Line = { p1: ball.position, p2: position };
+  const intercept = interceptBouncer(movementLine, state);
 
   if (intercept) {
     // TODO: bounce ball off intercept point.
     //  Need to get the angle of intercept relative to bouncer
-    // Also should recalculate position for the remaining movement after the bounce
 
-    // Currently just inverting direction and latching to bounce point.
-    position = intercept;
+    const remainder =
+      length(movementLine) - length({ p1: ball.position, p2: intercept });
+    position = { x: intercept.x, y: intercept.y - remainder };
     velocity = scale(velocity, -1);
   }
 

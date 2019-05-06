@@ -3,12 +3,12 @@ import * as React from "react";
 import ThemeProvider from "@/theme/components/ThemeProvider";
 import StoreProvider from "@/store/components/StoreProvider";
 
-import Boing from "@/components/Boing";
+import Game from "@/components/Game";
 
 const Root: React.FC = () => (
   <ThemeProvider>
     <StoreProvider>
-      <Boing />
+      <Game />
     </StoreProvider>
   </ThemeProvider>
 );

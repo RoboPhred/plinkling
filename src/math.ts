@@ -24,6 +24,12 @@ export function scale(a: Readonly<Vector2>, scaler: number): Vector2 {
   };
 }
 
+export function length(a: Line): number {
+  const x = a.p1.x - a.p2.x;
+  const y = (a.p1.y = a.p2.y);
+  return Math.sqrt(x * x + y * y);
+}
+
 export function intercept(a: Line, b: Line): Vector2 | null {
   // y = mx+b
   // m1*x+b1 = m2*x+b2
@@ -51,11 +57,11 @@ export function intercept(a: Line, b: Line): Vector2 | null {
   if (am === Number.POSITIVE_INFINITY) {
     // a is vertical line
     y = bm * a.p1.x + bb;
-    x = bm !== 0 ? (y - bb) / bm : b.p1.x;
+    x = a.p1.x;
   } else if (bm === Number.POSITIVE_INFINITY) {
     // b is vertical line
     y = am * b.p1.x + ab;
-    x = am !== 0 ? (y - ab) / am : a.p1.x;
+    x = b.p1.x;
   } else {
     x = (ab - bb) / (bm - am);
     y = am * x + ab;

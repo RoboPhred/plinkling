@@ -3,6 +3,10 @@ import { takeEvery, put } from "redux-saga/effects";
 
 import { tick } from "@/services/boing/actions/tick";
 
+// Allowing us to calculate the offset seems to cause crazyness,
+//  rounding errors?
+const FIXED_TIME = true;
+
 export default function* tickSaga() {
   yield takeEvery(interval(10), onTick);
 }
@@ -17,7 +21,7 @@ function interval(delayMillis: number) {
     const iv = setInterval(() => {
       const current = Date.now();
       const elapsed = current - previous;
-      emitter(elapsed);
+      emitter(FIXED_TIME ? 10 : elapsed);
       previous - current;
     }, delayMillis);
     return () => {
