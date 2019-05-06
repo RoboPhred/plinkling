@@ -7,8 +7,13 @@ import { isTickAction } from "../actions/tick";
 
 import tickEmittersReducer from "./tick-emitters";
 import tickBallsReducer from "./tick-balls";
+import createBouncerReducer from "./create-bouncer";
 
-const childReducers = reduceReducers(tickEmittersReducer, tickBallsReducer);
+const childReducers = reduceReducers(
+  tickEmittersReducer,
+  tickBallsReducer,
+  createBouncerReducer
+);
 
 export default function reducer(
   state: BoingServiceState = defaultBoingServiceState,

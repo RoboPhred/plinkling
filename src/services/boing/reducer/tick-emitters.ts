@@ -4,7 +4,7 @@ import uuid from "uuid/v4";
 import { BoingServiceState, defaultBoingServiceState } from "../state";
 
 import { identities } from "@/identity";
-import { Vector2, VEC_ZERO } from "@/math";
+import { VEC_ZERO } from "@/math";
 
 import { isTickAction } from "../actions/tick";
 
@@ -34,7 +34,7 @@ export default function tickEmittersReducer(
           [newBallId]: {
             id: newBallId,
             position: emitter.position,
-            velocity: VEC_ZERO
+            velocity: emitter.velocity
           }
         }
       };

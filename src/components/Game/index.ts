@@ -1,2 +1,4 @@
 import Game from "./component";
-export default Game;
+import connectGame from "./connector";
+
+export default connectGame(Game);
