@@ -67,9 +67,6 @@ function tickBall(
   if (interceptData) {
     const { bouncerId, intercept } = interceptData;
     const bouncer = state.bouncers[bouncerId];
-    // TODO: bounce ball off intercept point.
-    //  Need to get the angle of intercept relative to bouncer
-
     const interceptAngle = angle(
       {
         x: bouncer.p2.x - bouncer.p1.x,

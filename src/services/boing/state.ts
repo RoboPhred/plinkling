@@ -16,6 +16,7 @@ export interface EmitterState extends IdentityObject {
 export interface BouncerState extends IdentityObject, Line {}
 
 export interface BoingServiceState {
+  tick: number;
   gravity: Vector2;
   fieldMin: Vector2;
   fieldMax: Vector2;
@@ -27,17 +28,25 @@ export interface BoingServiceState {
 export const defaultBoingServiceState: Readonly<
   BoingServiceState
 > = Object.freeze({
+  tick: 0,
   gravity: { x: 0, y: 9.8 / SECOND_AS_MILLIS },
   fieldMin: { x: -1000, y: -1000 },
   fieldMax: { x: 1000, y: 1000 },
   balls: {
+    // a: {
+    //   id: "a",
+    //   position: { x: 0, y: 0 },
+    //   velocity: { x: 0, y: 0 }
+    // }
+  },
+  emitters: {
     a: {
       id: "a",
       position: { x: 0, y: 0 },
-      velocity: { x: 0, y: 0 }
+      rate: 1000,
+      lastEmit: 0
     }
   },
-  emitters: {},
   bouncers: {
     a: {
       id: "a",
@@ -47,7 +56,7 @@ export const defaultBoingServiceState: Readonly<
       },
       p2: {
         x: 100,
-        y: 800
+        y: 850
       }
     }
   }

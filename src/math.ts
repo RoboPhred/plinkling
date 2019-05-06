@@ -10,6 +10,8 @@ export interface Line {
   p2: Vector2;
 }
 
+export const VEC_ZERO: Readonly<Vector2> = Object.freeze({ x: 0, y: 0 });
+
 export function add(a: Readonly<Vector2>, b: Readonly<Vector2>): Vector2 {
   return {
     x: a.x + b.x,
