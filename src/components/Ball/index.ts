@@ -1,2 +1,3 @@
 import Ball from "./component";
-export default Ball;
+import connectBall from "./connector";
+export default connectBall(Ball);

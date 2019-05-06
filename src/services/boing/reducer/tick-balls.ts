@@ -64,6 +64,8 @@ function tickBall(
   const movementLine: Line = { p1: ball.position, p2: position };
   const interceptData = interceptBouncer(movementLine, state);
 
+  let hit = false;
+
   if (interceptData) {
     const { bouncerId, intercept } = interceptData;
     const bouncer = state.bouncers[bouncerId];
@@ -86,12 +88,14 @@ function tickBall(
 
     position = add(intercept, vector(bounceAngle, reflect));
     velocity = vector(bounceAngle, magnitude(velocity));
+    hit = true;
   }
 
   return {
     ...ball,
     position,
-    velocity
+    velocity,
+    toneTriggerTimestamp: hit ? Date.now() + 1000 : ball.toneTriggerTimestamp
   };
 }
 

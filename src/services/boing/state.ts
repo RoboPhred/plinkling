@@ -1,11 +1,18 @@
-import { Vector2, Line } from "@/math";
+import { Vector2, Line, VEC_ZERO } from "@/math";
 import { SECOND_AS_MILLIS } from "@/time";
 import { IdentityObject, IdentityCollection } from "@/identity";
 
 export interface BallState extends IdentityObject {
   position: Vector2;
   velocity: Vector2;
+  toneTriggerTimestamp: number;
 }
+export const defaultBallState: Readonly<BallState> = Object.freeze({
+  id: "dummy",
+  position: VEC_ZERO,
+  velocity: VEC_ZERO,
+  toneTriggerTimestamp: 0
+});
 
 export interface EmitterState extends IdentityObject {
   position: Vector2;

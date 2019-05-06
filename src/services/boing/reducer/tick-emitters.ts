@@ -1,7 +1,11 @@
 import { AnyAction } from "redux";
 import uuid from "uuid/v4";
 
-import { BoingServiceState, defaultBoingServiceState } from "../state";
+import {
+  BoingServiceState,
+  defaultBoingServiceState,
+  defaultBallState
+} from "../state";
 
 import { identities } from "@/identity";
 import { VEC_ZERO } from "@/math";
@@ -32,6 +36,7 @@ export default function tickEmittersReducer(
         balls: {
           ...state.balls,
           [newBallId]: {
+            ...defaultBallState,
             id: newBallId,
             position: emitter.position,
             velocity: emitter.velocity
