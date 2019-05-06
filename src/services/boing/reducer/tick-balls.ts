@@ -80,8 +80,9 @@ function tickBall(
 
     const bounceAngle = Math.PI * 2 - interceptAngle;
 
-    const reflect =
-      length(movementLine) - length({ p1: ball.position, p2: intercept });
+    const reflect = Math.abs(
+      length(movementLine) - length({ p1: ball.position, p2: intercept })
+    );
 
     position = add(intercept, vector(bounceAngle, reflect));
     velocity = vector(bounceAngle, magnitude(velocity));

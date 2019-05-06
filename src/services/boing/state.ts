@@ -43,8 +43,8 @@ export const defaultBoingServiceState: Readonly<
   emitters: {
     a: {
       id: "a",
-      position: { x: 500, y: 800 },
-      velocity: { x: 0, y: 11 },
+      position: { x: 500, y: 650 },
+      velocity: { x: 0, y: -11 },
       rate: 1000,
       lastEmit: 0
     }
@@ -54,23 +54,23 @@ export const defaultBoingServiceState: Readonly<
       id: "a",
       p1: {
         x: 0,
-        y: 800
+        y: 200
       },
       p2: {
         x: 1000,
-        y: 850
-      }
-    },
-    b: {
-      id: "b",
-      p1: {
-        x: 0,
-        y: 400
-      },
-      p2: {
-        x: 1000,
-        y: 500
+        y: 200
       }
     }
+    // b: {
+    //   id: "b",
+    //   p1: {
+    //     x: 0,
+    //     y: 300
+    //   },
+    //   p2: {
+    //     x: 1000,
+    //     y: 500
+    //   }
+    // }
   }
 });

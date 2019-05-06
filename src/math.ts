@@ -40,13 +40,23 @@ export function dotProduct(a: Vector2, b: Vector2) {
   return a.x * b.x + a.y * b.y;
 }
 
+export function determinate(a: Vector2, b: Vector2) {
+  return a.x * b.y - a.y * b.x;
+}
+
 export function angle(a: Vector2, b: Vector2): number {
-  // a.b = |a| * |b| * cos t
-  // cos t = a.b / (|a| * |b|)
-  const la = magnitude(a);
-  const lb = magnitude(b);
+  // This method only produces in range of 0 to 180
+  // // a.b = |a| * |b| * cos t
+  // // cos t = a.b / (|a| * |b|)
+  // const la = magnitude(a);
+  // const lb = magnitude(b);
+  // const dot = dotProduct(a, b);
+  // return Math.acos(dot / (la * lb));
+
+  // This method gives full circle angles
+  const det = determinate(a, b);
   const dot = dotProduct(a, b);
-  return Math.acos(dot / (la * lb));
+  return Math.atan2(det, dot);
 }
 
 export function vector(angle: number, magnitude: number) {
@@ -80,11 +90,11 @@ export function intercept(a: Line, b: Line): Vector2 | null {
   }
 
   let x: number, y: number;
-  if (am === Number.POSITIVE_INFINITY) {
+  if (!Number.isFinite(am)) {
     // a is vertical line
     y = bm * a.p1.x + bb;
     x = a.p1.x;
-  } else if (bm === Number.POSITIVE_INFINITY) {
+  } else if (!Number.isFinite(bm)) {
     // b is vertical line
     y = am * b.p1.x + ab;
     x = b.p1.x;
