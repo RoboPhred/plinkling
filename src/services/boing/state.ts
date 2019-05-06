@@ -41,11 +41,11 @@ export const defaultBoingServiceState: Readonly<
       id: "a",
       p1: {
         x: 0,
-        y: 100
+        y: 800
       },
       p2: {
         x: 100,
-        y: 100
+        y: 800
       }
     }
   }

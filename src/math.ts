@@ -47,17 +47,15 @@ export function intercept(a: Line, b: Line): Vector2 | null {
     return null;
   }
 
-  // TODO: x coord is incorrect for vertical meets horizontal
-
   let x: number, y: number;
   if (am === Number.POSITIVE_INFINITY) {
     // a is vertical line
     y = bm * a.p1.x + bb;
-    x = (y - bb) / bm;
+    x = bm !== 0 ? (y - bb) / bm : b.p1.x;
   } else if (bm === Number.POSITIVE_INFINITY) {
     // b is vertical line
     y = am * b.p1.x + ab;
-    x = (y - ab) / am;
+    x = am !== 0 ? (y - ab) / am : a.p1.x;
   } else {
     x = (ab - bb) / (bm - am);
     y = am * x + ab;
