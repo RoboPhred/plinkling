@@ -30,6 +30,30 @@ export function length(a: Line): number {
   return Math.sqrt(x * x + y * y);
 }
 
+export function magnitude(a: Vector2): number {
+  return Math.sqrt(a.x * a.x + a.y * a.y);
+}
+
+export function dotProduct(a: Vector2, b: Vector2) {
+  return a.x * b.x + a.y * b.y;
+}
+
+export function angle(a: Vector2, b: Vector2): number {
+  // a.b = |a| * |b| * cos t
+  // cos t = a.b / (|a| * |b|)
+  const la = magnitude(a);
+  const lb = magnitude(b);
+  const dot = dotProduct(a, b);
+  return Math.acos(dot / (la * lb));
+}
+
+export function vector(angle: number, magnitude: number) {
+  return {
+    x: magnitude * Math.cos(angle),
+    y: magnitude * Math.sin(angle)
+  };
+}
+
 export function intercept(a: Line, b: Line): Vector2 | null {
   // y = mx+b
   // m1*x+b1 = m2*x+b2

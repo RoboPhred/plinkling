@@ -17,7 +17,8 @@ export interface BouncerState extends IdentityObject, Line {}
 
 export interface BoingServiceState {
   gravity: Vector2;
-  fieldSize: Vector2;
+  fieldMin: Vector2;
+  fieldMax: Vector2;
   balls: IdentityCollection<BallState>;
   emitters: IdentityCollection<EmitterState>;
   bouncers: IdentityCollection<BouncerState>;
@@ -27,7 +28,8 @@ export const defaultBoingServiceState: Readonly<
   BoingServiceState
 > = Object.freeze({
   gravity: { x: 0, y: 9.8 / SECOND_AS_MILLIS },
-  fieldSize: { x: 1000, y: 1000 },
+  fieldMin: { x: -1000, y: -1000 },
+  fieldMax: { x: 1000, y: 1000 },
   balls: {
     a: {
       id: "a",
