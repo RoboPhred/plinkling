@@ -5,6 +5,7 @@ import { Vector2, VEC_ZERO } from "@/math";
 
 import BallField from "../BallField";
 import BouncerField from "../BouncerField";
+import EmitterField from "../EmitterField";
 
 export interface GameProps {
   className?: string;
@@ -70,6 +71,7 @@ const Game: React.FC<GameProps> = ({
       >
         <BallField />
         <BouncerField />
+        <EmitterField />
         {newBouncerStart && newBouncerEnd && (
           <line
             x1={newBouncerStart.x}

@@ -5,7 +5,7 @@ export interface BallProps {
 }
 
 const Ball: React.FC<BallProps> = ({ toneTriggerTimestamp }) => {
-  return <circle r={5} />;
+  return <circle r={3} />;
 };
 
 export default Ball;

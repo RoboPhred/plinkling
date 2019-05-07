@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { pick } from "lodash";
 
 import { AppState } from "@/state";
+import { bouncersByIdSelector } from "@/services/boing/selectors/bouncers";
 
 export interface BouncerInputProps {
   id: string;
@@ -9,7 +10,7 @@ export interface BouncerInputProps {
 
 function mapStateToProps(state: AppState, props: BouncerInputProps) {
   const { id } = props;
-  const ball = state.services.boing.bouncersById[id];
+  const ball = bouncersByIdSelector(state)[id];
   return pick(ball, ["p1", "p2", "toneTriggerTimestamp"]);
 }
 
