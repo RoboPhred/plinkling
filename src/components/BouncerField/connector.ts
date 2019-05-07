@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import { pick } from "lodash-es";
+import { pick } from "lodash";
 
 import { identities } from "@/identity";
 
@@ -13,7 +13,7 @@ function mapStateToProps(state: AppState) {
   const bouncerIds = identities(bouncersById);
   const bouncers = bouncerIds
     .map(id => bouncersById[id])
-    .map(bouncer => pick(bouncer, ["id", "p1", "p2"]));
+    .map(bouncer => pick(bouncer, ["id"]));
 
   return {
     bouncers

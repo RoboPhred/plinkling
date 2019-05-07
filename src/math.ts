@@ -12,6 +12,10 @@ export interface Line {
 
 export const VEC_ZERO: Readonly<Vector2> = Object.freeze({ x: 0, y: 0 });
 
+export function constrain(x: number, min: number, max: number): number {
+  return Math.min(Math.max(x, min), max);
+}
+
 export function add(a: Readonly<Vector2>, b: Readonly<Vector2>): Vector2 {
   return {
     x: a.x + b.x,
@@ -26,25 +30,25 @@ export function scale(a: Readonly<Vector2>, scaler: number): Vector2 {
   };
 }
 
-export function length(a: Line): number {
+export function length(a: Readonly<Line>): number {
   const x = a.p1.x - a.p2.x;
-  const y = (a.p1.y = a.p2.y);
+  const y = a.p1.y - a.p2.y;
   return Math.sqrt(x * x + y * y);
 }
 
-export function magnitude(a: Vector2): number {
+export function magnitude(a: Readonly<Vector2>): number {
   return Math.sqrt(a.x * a.x + a.y * a.y);
 }
 
-export function dotProduct(a: Vector2, b: Vector2) {
+export function dotProduct(a: Readonly<Vector2>, b: Readonly<Vector2>) {
   return a.x * b.x + a.y * b.y;
 }
 
-export function determinate(a: Vector2, b: Vector2) {
+export function determinate(a: Readonly<Vector2>, b: Readonly<Vector2>) {
   return a.x * b.y - a.y * b.x;
 }
 
-export function angle(a: Vector2, b: Vector2): number {
+export function angle(a: Readonly<Vector2>, b: Readonly<Vector2>): number {
   // This method only produces in range of 0 to 180
   // // a.b = |a| * |b| * cos t
   // // cos t = a.b / (|a| * |b|)
@@ -66,7 +70,10 @@ export function vector(angle: number, magnitude: number) {
   };
 }
 
-export function intercept(a: Line, b: Line): Vector2 | null {
+export function intercept(
+  a: Readonly<Line>,
+  b: Readonly<Line>
+): Vector2 | null {
   // y = mx+b
   // m1*x+b1 = m2*x+b2
   // b1 = m2*x - m1*x + b2
@@ -119,7 +126,11 @@ export function intercept(a: Line, b: Line): Vector2 | null {
   return intercept;
 }
 
-function pointInRange(p: Vector2, a: Vector2, b: Vector2): boolean {
+function pointInRange(
+  p: Readonly<Vector2>,
+  a: Readonly<Vector2>,
+  b: Readonly<Vector2>
+): boolean {
   const minX = Math.min(a.x, b.x);
   const maxX = Math.max(a.x, b.x);
   const minY = Math.min(a.y, b.y);

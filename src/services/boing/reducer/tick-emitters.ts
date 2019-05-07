@@ -20,21 +20,21 @@ export default function tickEmittersReducer(
     return state;
   }
 
-  for (const emitterId of identities(state.emitters)) {
-    const emitter = state.emitters[emitterId];
+  for (const emitterId of identities(state.emittersById)) {
+    const emitter = state.emittersById[emitterId];
     if (state.tick - emitter.lastEmit >= emitter.rate) {
       const newBallId = uuid();
       state = {
         ...state,
-        emitters: {
-          ...state.emitters,
+        emittersById: {
+          ...state.emittersById,
           [emitterId]: {
-            ...state.emitters[emitterId],
+            ...state.emittersById[emitterId],
             lastEmit: state.tick
           }
         },
-        balls: {
-          ...state.balls,
+        ballsById: {
+          ...state.ballsById,
           [newBallId]: {
             ...defaultBallState,
             id: newBallId,

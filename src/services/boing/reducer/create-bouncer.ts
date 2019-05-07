@@ -1,7 +1,11 @@
 import { AnyAction } from "redux";
 import uuid from "uuid/v4";
 
-import { defaultBoingServiceState, BoingServiceState } from "../state";
+import {
+  defaultBoingServiceState,
+  BoingServiceState,
+  defaultBouncerState
+} from "../state";
 
 import { isCreateBouncerAction } from "../actions/create-bouncer";
 
@@ -18,9 +22,10 @@ export default function createBouncerReducer(
 
   return {
     ...state,
-    bouncers: {
-      ...state.bouncers,
+    bouncersById: {
+      ...state.bouncersById,
       [id]: {
+        ...defaultBouncerState,
         id,
         p1,
         p2

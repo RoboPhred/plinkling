@@ -1,5 +1,6 @@
 import { AnyAction } from "redux";
-import { first } from "lodash-es";
+import { first } from "lodash";
+import { set, unset } from "lodash/fp";
 
 import {
   add,
@@ -13,12 +14,13 @@ import {
   magnitude
 } from "@/math";
 import { mapOrRemove, isNotNull } from "@/utils";
-import { values } from "@/identity";
+import { values, identities } from "@/identity";
 
 import {
   BoingServiceState,
   defaultBoingServiceState,
-  BallState
+  BallState,
+  BouncerState
 } from "../state";
 
 import { isTickAction } from "../actions/tick";
@@ -33,20 +35,23 @@ export default function tickBallsReducer(
 
   const { millisElapsed } = action.payload;
 
-  return {
-    ...state,
-    balls: mapOrRemove(state.balls, ball =>
-      tickBall(ball, millisElapsed, state)
-    )
-  };
+  const ballIds = identities(state.ballsById);
+
+  state = ballIds.reduce(
+    (state, id) => tickBall(state, id, millisElapsed),
+    state
+  );
+
+  return state;
 }
 
 function tickBall(
-  ball: BallState,
-  millisElapsed: number,
-  state: BoingServiceState
-): BallState | null {
-  const { gravity, fieldMin, fieldMax } = state;
+  state: BoingServiceState,
+  ballId: string,
+  millisElapsed: number
+): BoingServiceState {
+  const { gravity, fieldMin, fieldMax, ballsById: balls } = state;
+  const ball = balls[ballId];
 
   let velocity = add(ball.velocity, scale(gravity, millisElapsed));
   let position = add(ball.position, velocity);
@@ -56,7 +61,7 @@ function tickBall(
     position.x > fieldMax.x ||
     position.y > fieldMax.y
   ) {
-    return null;
+    return unset(["ballsById", ballId], state);
   }
 
   // Trace a line from the ball's previous position to the
@@ -64,11 +69,9 @@ function tickBall(
   const movementLine: Line = { p1: ball.position, p2: position };
   const interceptData = interceptBouncer(movementLine, state);
 
-  let hit = false;
-
   if (interceptData) {
     const { bouncerId, intercept } = interceptData;
-    const bouncer = state.bouncers[bouncerId];
+    const bouncer = state.bouncersById[bouncerId];
     const interceptAngle = angle(
       {
         x: bouncer.p2.x - bouncer.p1.x,
@@ -88,22 +91,35 @@ function tickBall(
 
     position = add(intercept, vector(bounceAngle, reflect));
     velocity = vector(bounceAngle, magnitude(velocity));
-    hit = true;
+
+    const bouncerState: BouncerState = {
+      ...bouncer,
+      toneTriggerTimestamp: Date.now()
+    };
+    Object.freeze(bouncerState);
+    Object.freeze(bouncerState.p1);
+    Object.freeze(bouncerState.p2);
+
+    state = set(["bouncersById", bouncerId], bouncerState, state);
   }
 
-  return {
+  const ballState: BallState = {
     ...ball,
     position,
-    velocity,
-    toneTriggerTimestamp: hit ? Date.now() + 1000 : ball.toneTriggerTimestamp
+    velocity
   };
+  Object.freeze(ballState);
+
+  state = set(["ballsById", ballId], ballState, state);
+
+  return state;
 }
 
 function interceptBouncer(
   line: Line,
   state: BoingServiceState
 ): { bouncerId: string; intercept: Vector2 } | null {
-  const intercepts = values(state.bouncers)
+  const intercepts = values(state.bouncersById)
     .map(bouncer => {
       const i = intercept(line, bouncer);
       if (i) {

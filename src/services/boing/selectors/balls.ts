@@ -1,4 +1,4 @@
 import { AppState } from "@/state";
 
 export const ballsByIdSelector = (state: AppState) =>
-  state.services.boing.balls;
+  state.services.boing.ballsById;

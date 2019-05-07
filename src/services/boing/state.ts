@@ -5,13 +5,10 @@ import { IdentityObject, IdentityCollection } from "@/identity";
 export interface BallState extends IdentityObject {
   position: Vector2;
   velocity: Vector2;
-  toneTriggerTimestamp: number;
 }
-export const defaultBallState: Readonly<BallState> = Object.freeze({
-  id: "dummy",
+export const defaultBallState = Object.freeze({
   position: VEC_ZERO,
-  velocity: VEC_ZERO,
-  toneTriggerTimestamp: 0
+  velocity: VEC_ZERO
 });
 
 export interface EmitterState extends IdentityObject {
@@ -21,16 +18,29 @@ export interface EmitterState extends IdentityObject {
   lastEmit: number;
 }
 
-export interface BouncerState extends IdentityObject, Line {}
+export const defaultEmitterState = Object.freeze({
+  position: VEC_ZERO,
+  rate: 1000,
+  velocity: VEC_ZERO,
+  lastEmit: 0
+});
+
+export interface BouncerState extends IdentityObject, Line {
+  toneTriggerTimestamp: number;
+}
+
+export const defaultBouncerState = Object.freeze({
+  toneTriggerTimestamp: 0
+});
 
 export interface BoingServiceState {
   tick: number;
   gravity: Vector2;
   fieldMin: Vector2;
   fieldMax: Vector2;
-  balls: IdentityCollection<BallState>;
-  emitters: IdentityCollection<EmitterState>;
-  bouncers: IdentityCollection<BouncerState>;
+  ballsById: IdentityCollection<BallState>;
+  emittersById: IdentityCollection<EmitterState>;
+  bouncersById: IdentityCollection<BouncerState>;
 }
 
 export const defaultBoingServiceState: Readonly<
@@ -40,44 +50,28 @@ export const defaultBoingServiceState: Readonly<
   gravity: { x: 0, y: 9.8 / SECOND_AS_MILLIS },
   fieldMin: { x: 0, y: 0 },
   fieldMax: { x: 1000, y: 1000 },
-  balls: {
-    // a: {
-    //   id: "a",
-    //   position: { x: 0, y: 0 },
-    //   velocity: { x: 0, y: 0 }
-    // }
-  },
-  emitters: {
+  ballsById: {},
+  emittersById: {
     a: {
+      ...defaultEmitterState,
       id: "a",
-      position: { x: 500, y: 650 },
-      velocity: { x: 0, y: -11 },
-      rate: 1000,
-      lastEmit: 0
+      position: { x: 100, y: 10 },
+      velocity: { x: 0, y: 0 },
+      rate: 1000
     }
   },
-  bouncers: {
-    a: {
-      id: "a",
+  bouncersById: {
+    b: {
+      ...defaultBouncerState,
+      id: "b",
       p1: {
         x: 0,
-        y: 200
+        y: 300
       },
       p2: {
-        x: 1000,
-        y: 200
+        x: 200,
+        y: 500
       }
     }
-    // b: {
-    //   id: "b",
-    //   p1: {
-    //     x: 0,
-    //     y: 300
-    //   },
-    //   p2: {
-    //     x: 1000,
-    //     y: 500
-    //   }
-    // }
   }
 });
