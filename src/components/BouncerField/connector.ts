@@ -11,12 +11,9 @@ import { bouncersByIdSelector } from "@/services/boing/selectors/bouncers";
 function mapStateToProps(state: AppState) {
   const bouncersById = bouncersByIdSelector(state);
   const bouncerIds = identities(bouncersById);
-  const bouncers = bouncerIds
-    .map(id => bouncersById[id])
-    .map(bouncer => pick(bouncer, ["id"]));
 
   return {
-    bouncers
+    bouncerIds
   };
 }
 

@@ -11,7 +11,7 @@ export interface BallInputProps {
 function mapStateToProps(state: AppState, props: BallInputProps) {
   const { id } = props;
   const ball = ballsByIdSelector(state)[id];
-  return pick(ball, ["toneTriggerTimestamp"]);
+  return pick(ball, ["position"]);
 }
 
 export default connect(mapStateToProps);

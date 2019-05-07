@@ -2,17 +2,13 @@ import * as React from "react";
 
 import Emitter from "../Emitter";
 
-export interface RenderEmitter {
-  id: string;
-}
-
 export interface BouncerFieldProps {
-  emitters: RenderEmitter[];
+  emitterIds: string[];
 }
 
-const EmitterField: React.FC<BouncerFieldProps> = ({ emitters }) => (
+const EmitterField: React.FC<BouncerFieldProps> = ({ emitterIds }) => (
   <g>
-    {emitters.map(({ id }) => (
+    {emitterIds.map(id => (
       <Emitter key={id} id={id} />
     ))}
   </g>

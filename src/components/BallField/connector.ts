@@ -11,12 +11,9 @@ import { ballsByIdSelector } from "@/services/boing/selectors/balls";
 function mapStateToProps(state: AppState) {
   const ballsById = ballsByIdSelector(state);
   const ballIds = identities(ballsById);
-  const balls = ballIds
-    .map(id => ballsById[id])
-    .map(ball => pick(ball, ["id", "position", "velocity"]));
 
   return {
-    balls
+    ballIds
   };
 }
 

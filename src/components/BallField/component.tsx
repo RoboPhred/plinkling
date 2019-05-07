@@ -2,23 +2,14 @@ import * as React from "react";
 
 import Ball from "../Ball";
 
-import { Vector2 } from "@/math";
-
-export interface RenderBall {
-  id: string;
-  position: Vector2;
-}
-
 export interface BallFieldProps {
-  balls: RenderBall[];
+  ballIds: string[];
 }
 
-const BallField: React.FC<BallFieldProps> = ({ balls }) => (
+const BallField: React.FC<BallFieldProps> = ({ ballIds }) => (
   <g>
-    {balls.map(({ position: { x, y }, id }) => (
-      <g key={id} transform={`translate(${x}, ${y})`}>
-        <Ball id={id} />
-      </g>
+    {ballIds.map(id => (
+      <Ball id={id} />
     ))}
   </g>
 );
