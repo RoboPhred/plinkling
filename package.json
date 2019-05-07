@@ -44,14 +44,12 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.29.4",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.14",
-    "worker-loader": "^2.0.0"
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "@rehooks/component-size": "^1.0.2",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
-    "raw-loader": "^1.0.0",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-jss": "^8.6.1",

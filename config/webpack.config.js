@@ -29,10 +29,7 @@ module.exports = {
   output: {
     filename: "[name].[hash].bundle.js",
     path: paths.appBuild,
-    publicPath: isDev ? "/" : paths.publicPath,
-
-    // Fix hot-reload interfering with worker-loader
-    globalObject: "this"
+    publicPath: isDev ? "/" : paths.publicPath
   },
 
   resolve: {
