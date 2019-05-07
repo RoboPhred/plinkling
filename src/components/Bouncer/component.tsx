@@ -5,7 +5,7 @@ import { Vector2, constrain, length } from "@/math";
 
 import DragBox from "../DragBox";
 
-const synth = new Tone.AMSynth().toMaster();
+const synth = new Tone.PolySynth(6, Tone.AMSynth).toMaster();
 
 export interface BouncerProps {
   toneTriggerTimestamp: number;
@@ -28,7 +28,6 @@ const Bouncer: React.FC<BouncerProps> = ({
 
   const onP1Move = React.useCallback(
     (x: number, y: number) => {
-      console.log("p1 move", { x, y }, p2);
       onMove({ x, y }, p2);
     },
     [onMove, p2]
@@ -36,7 +35,6 @@ const Bouncer: React.FC<BouncerProps> = ({
 
   const onP2Move = React.useCallback(
     (x: number, y: number) => {
-      console.log("p2 move", p1, { x, y });
       onMove(p1, { x, y });
     },
     [onMove, p1]
