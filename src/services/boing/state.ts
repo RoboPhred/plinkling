@@ -61,17 +61,17 @@ export const defaultBoingServiceState: Readonly<
     }
   },
   bouncersById: {
-    // b: {
-    //   ...defaultBouncerState,
-    //   id: "b",
-    //   p1: {
-    //     x: 0,
-    //     y: 300
-    //   },
-    //   p2: {
-    //     x: 200,
-    //     y: 500
-    //   }
-    // }
+    b: {
+      ...defaultBouncerState,
+      id: "b",
+      p1: {
+        x: 0,
+        y: 300
+      },
+      p2: {
+        x: 200,
+        y: 300
+      }
+    }
   }
 });

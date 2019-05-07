@@ -11,6 +11,7 @@ export interface Line {
 }
 
 export const VEC_ZERO: Readonly<Vector2> = Object.freeze({ x: 0, y: 0 });
+export const VEC_X: Readonly<Vector2> = Object.freeze({ x: 1, y: 0 });
 
 export function constrain(x: number, min: number, max: number): number {
   return Math.min(Math.max(x, min), max);
@@ -20,6 +21,13 @@ export function add(a: Readonly<Vector2>, b: Readonly<Vector2>): Vector2 {
   return {
     x: a.x + b.x,
     y: a.y + b.y
+  };
+}
+
+export function subtract(a: Readonly<Vector2>, b: Readonly<Vector2>): Vector2 {
+  return {
+    x: a.x - b.x,
+    y: a.y - b.y
   };
 }
 

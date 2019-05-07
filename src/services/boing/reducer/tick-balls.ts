@@ -11,9 +11,11 @@ import {
   Vector2,
   angle,
   vector,
-  magnitude
+  magnitude,
+  VEC_X,
+  subtract
 } from "@/math";
-import { mapOrRemove, isNotNull } from "@/utils";
+import { isNotNull } from "@/utils";
 import { values, identities } from "@/identity";
 
 import {
@@ -67,33 +69,16 @@ function tickBall(
   // Trace a line from the ball's previous position to the
   //  current position, then see if it intercepts a bouncer
   const movementLine: Line = { p1: ball.position, p2: position };
+  const movementVec: Vector2 = subtract(movementLine.p1, movementLine.p2);
   const interceptData = interceptBouncer(movementLine, state);
 
   if (interceptData) {
     const { bouncerId, intercept } = interceptData;
     const bouncer = state.bouncersById[bouncerId];
-    let interceptAngle = angle(
-      {
-        x: bouncer.p2.x - bouncer.p1.x,
-        y: bouncer.p2.y - bouncer.p1.y
-      },
-      {
-        x: movementLine.p2.x - movementLine.p1.x,
-        y: movementLine.p2.y - movementLine.p1.y
-      }
-    );
 
-    if (interceptAngle < 0) {
-      interceptAngle += Math.PI * 2;
-    }
-
-    // Line direction might calculate an angle > 180
-    //  If so, reduce it back
-    if (interceptAngle > Math.PI) {
-      interceptAngle -= Math.PI;
-    }
-
-    const bounceAngle = Math.PI * 2 - interceptAngle;
+    const interceptAngle = angle(subtract(bouncer.p2, bouncer.p1), movementVec);
+    const lineAngle = angle(VEC_X, subtract(bouncer.p2, bouncer.p1));
+    const bounceAngle = lineAngle + (Math.PI - interceptAngle);
 
     const reflect = Math.abs(
       length(movementLine) - length({ p1: ball.position, p2: intercept })
