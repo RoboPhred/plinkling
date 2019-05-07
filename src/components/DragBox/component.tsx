@@ -1,4 +1,7 @@
 import * as React from "react";
+import injectSheet from "react-jss";
+
+import { createStyles, WithStyles } from "@/theme";
 
 export interface DragBoxProps {
   x: number;
@@ -6,7 +9,14 @@ export interface DragBoxProps {
   onDrag(x: number, y: number): void;
 }
 
-const DragBox: React.FC<DragBoxProps> = ({ x, y, onDrag }) => {
+const styles = createStyles({
+  rect: {
+    cursor: "pointer"
+  }
+});
+
+type Props = DragBoxProps & WithStyles<typeof styles>;
+const DragBox: React.FC<Props> = ({ x, y, classes, onDrag }) => {
   const ref = React.useRef<SVGRectElement>(null);
   const [isMoving, setMoving] = React.useState(false);
   const pointerDown = React.useCallback(
@@ -46,6 +56,7 @@ const DragBox: React.FC<DragBoxProps> = ({ x, y, onDrag }) => {
   );
   return (
     <rect
+      className={classes.rect}
       ref={ref}
       x={x - 6}
       y={y - 6}
@@ -59,4 +70,4 @@ const DragBox: React.FC<DragBoxProps> = ({ x, y, onDrag }) => {
   );
 };
 
-export default DragBox;
+export default injectSheet(styles)(DragBox);

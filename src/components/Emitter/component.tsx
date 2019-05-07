@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { Vector2 } from "@/math";
 
+import CircularSvgSlider from "@/components/CircularSvgSlider";
+
 export interface EmitterProps {
   position: Vector2;
   onMove(x: number, y: number): void;
@@ -46,16 +48,28 @@ const Emitter: React.FC<EmitterProps> = ({ position, onMove }) => {
     [ref, setMoving]
   );
   return (
-    <circle
-      ref={ref}
-      fill="grey"
-      r={5}
-      cx={position.x}
-      cy={position.y}
-      onPointerDown={pointerDown}
-      onPointerMove={pointerMove}
-      onPointerUp={pointerUp}
-    />
+    <g transform={`translate(${position.x}, ${position.y})`}>
+      <circle
+        ref={ref}
+        fill="grey"
+        r={5}
+        cx={0}
+        cy={0}
+        onPointerDown={pointerDown}
+        onPointerMove={pointerMove}
+        onPointerUp={pointerUp}
+      />
+      <CircularSvgSlider
+        cx={0}
+        cy={0}
+        r={15}
+        text="test"
+        min={0}
+        max={100}
+        value={50}
+        onChange={() => {}}
+      />
+    </g>
   );
 };
 
