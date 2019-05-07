@@ -24,28 +24,30 @@ const Game: React.FC<GameProps> = ({
   const [newBouncerEnd, setNewBouncerEnd] = React.useState<Vector2 | null>(
     null
   );
-  const mouseDown = React.useCallback(
-    (e: React.MouseEvent<SVGElement>) => {
+  const pointerDown = React.useCallback(
+    (e: React.PointerEvent<SVGElement>) => {
       setNewBouncerStart({ x: e.clientX, y: e.clientY });
       setNewBouncerEnd({ x: e.clientX, y: e.clientY });
+      e.stopPropagation();
       e.preventDefault();
     },
     [setNewBouncerStart, setNewBouncerEnd]
   );
-  const mouseMove = React.useCallback(
-    (e: React.MouseEvent<SVGElement>) => {
+  const pointerMove = React.useCallback(
+    (e: React.PointerEvent<SVGElement>) => {
       setNewBouncerEnd({ x: e.clientX, y: e.clientY });
     },
     [setNewBouncerEnd]
   );
-  const mouseUp = React.useCallback(
-    (e: React.MouseEvent<SVGElement>) => {
+  const pointerUp = React.useCallback(
+    (e: React.PointerEvent<SVGElement>) => {
       if (newBouncerStart == null) {
         return;
       }
       onCreateBouncer(newBouncerStart, { x: e.clientX, y: e.clientY });
       setNewBouncerStart(null);
       setNewBouncerEnd(null);
+      e.stopPropagation();
       e.preventDefault();
     },
     [newBouncerStart, setNewBouncerStart, setNewBouncerEnd, onCreateBouncer]
@@ -65,9 +67,9 @@ const Game: React.FC<GameProps> = ({
         width={`${size.width}`}
         height={`${size.height}`}
         viewBox={`0 0 ${size.width} ${size.height}`}
-        onMouseDown={mouseDown}
-        onMouseMove={mouseMove}
-        onMouseUp={mouseUp}
+        onPointerDown={pointerDown}
+        onPointerMove={pointerMove}
+        onPointerUp={pointerUp}
       >
         <BallField />
         <BouncerField />

@@ -4,6 +4,8 @@ import { pick } from "lodash";
 
 import { AppState } from "@/state";
 import { emittersByIdSelector } from "@/services/boing/selectors/emitters";
+import { Dispatch } from "redux";
+import { moveEmitter } from "@/services/boing/actions/move-emitter";
 
 export interface EmitterInputProps {
   id: string;
@@ -15,4 +17,13 @@ function mapStateToProps(state: AppState, props: EmitterInputProps) {
   return pick(emitter, "position");
 }
 
-export default connect(mapStateToProps);
+function mapDispatchToProps(dispatch: Dispatch, props: EmitterInputProps) {
+  return {
+    onMove: (x: number, y: number) => dispatch(moveEmitter(props.id, x, y))
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+);
