@@ -1,15 +1,22 @@
 import * as React from "react";
+import useComponentSize from "@rehooks/component-size";
 
-import { VEC_ZERO, Vector2 } from "@/math";
+import { Vector2, VEC_ZERO } from "@/math";
 
 import BallField from "../BallField";
 import BouncerField from "../BouncerField";
 
 export interface GameProps {
+  className?: string;
   onCreateBouncer(p1: Vector2, p2: Vector2): void;
+  onResize(x: number, y: number): void;
 }
 
-const Game: React.FC<GameProps> = ({ onCreateBouncer }) => {
+const Game: React.FC<GameProps> = ({
+  className,
+  onCreateBouncer,
+  onResize
+}) => {
   const [newBouncerStart, setNewBouncerStart] = React.useState<Vector2 | null>(
     null
   );
@@ -43,12 +50,20 @@ const Game: React.FC<GameProps> = ({ onCreateBouncer }) => {
     [newBouncerStart, setNewBouncerStart, setNewBouncerEnd, onCreateBouncer]
   );
 
+  const ref = React.useRef(null);
+  const [oldSize, setOldSize] = React.useState(VEC_ZERO);
+  const size = useComponentSize(ref);
+  if (size.width !== oldSize.x || size.height !== oldSize.y) {
+    setOldSize({ x: size.width, y: size.height });
+    onResize(size.width, size.height);
+  }
+
   return (
-    <div>
+    <div className={className} ref={ref}>
       <svg
-        width="1000"
-        height="1000"
-        viewBox="0 0 1000 1000"
+        width={`${size.width}`}
+        height={`${size.height}`}
+        viewBox={`0 0 ${size.width} ${size.height}`}
         onMouseDown={mouseDown}
         onMouseMove={mouseMove}
         onMouseUp={mouseUp}

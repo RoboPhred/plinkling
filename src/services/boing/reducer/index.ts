@@ -8,11 +8,13 @@ import { isTickAction } from "../actions/tick";
 import tickEmittersReducer from "./tick-emitters";
 import tickBallsReducer from "./tick-balls";
 import createBouncerReducer from "./create-bouncer";
+import setSize from "./set-size";
 
 const childReducers = reduceReducers(
   tickEmittersReducer,
   tickBallsReducer,
-  createBouncerReducer
+  createBouncerReducer,
+  setSize
 );
 
 export default function reducer(
