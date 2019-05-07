@@ -48,10 +48,10 @@ const DragBox: React.FC<DragBoxProps> = ({ x, y, onDrag }) => {
   return (
     <rect
       ref={ref}
-      x={x - 8}
-      y={y - 8}
-      width={16}
-      height={16}
+      x={x - 6}
+      y={y - 6}
+      width={12}
+      height={12}
       fill="darkgrey"
       onPointerDown={pointerDown}
       onPointerMove={pointerMove}
