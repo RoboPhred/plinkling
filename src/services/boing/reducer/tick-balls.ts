@@ -72,7 +72,7 @@ function tickBall(
   if (interceptData) {
     const { bouncerId, intercept } = interceptData;
     const bouncer = state.bouncersById[bouncerId];
-    const interceptAngle = angle(
+    let interceptAngle = angle(
       {
         x: bouncer.p2.x - bouncer.p1.x,
         y: bouncer.p2.y - bouncer.p1.y
@@ -82,6 +82,16 @@ function tickBall(
         y: movementLine.p2.y - movementLine.p1.y
       }
     );
+
+    if (interceptAngle < 0) {
+      interceptAngle += Math.PI * 2;
+    }
+
+    // Line direction might calculate an angle > 180
+    //  If so, reduce it back
+    if (interceptAngle > Math.PI) {
+      interceptAngle -= Math.PI;
+    }
 
     const bounceAngle = Math.PI * 2 - interceptAngle;
 
