@@ -9,6 +9,7 @@ import tickEmittersReducer from "./tick-emitters";
 import tickBallsReducer from "./tick-balls";
 import createBouncerReducer from "./create-bouncer";
 import moveEmitterReducer from "./move-emitter";
+import moveBouncerReducer from "./move-bouncer";
 import setSize from "./set-size";
 
 const childReducers = reduceReducers(
@@ -16,6 +17,7 @@ const childReducers = reduceReducers(
   tickBallsReducer,
   createBouncerReducer,
   moveEmitterReducer,
+  moveBouncerReducer,
   setSize
 );
 

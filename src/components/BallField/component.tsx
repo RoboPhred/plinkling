@@ -9,7 +9,7 @@ export interface BallFieldProps {
 const BallField: React.FC<BallFieldProps> = ({ ballIds }) => (
   <g>
     {ballIds.map(id => (
-      <Ball id={id} />
+      <Ball key={id} id={id} />
     ))}
   </g>
 );
