@@ -28,6 +28,7 @@ const Bouncer: React.FC<BouncerProps> = ({
 
   const onP1Move = React.useCallback(
     (x: number, y: number) => {
+      console.log("p1 move", { x, y }, p2);
       onMove({ x, y }, p2);
     },
     [onMove, p2]
@@ -35,6 +36,7 @@ const Bouncer: React.FC<BouncerProps> = ({
 
   const onP2Move = React.useCallback(
     (x: number, y: number) => {
+      console.log("p2 move", p1, { x, y });
       onMove(p1, { x, y });
     },
     [onMove, p1]

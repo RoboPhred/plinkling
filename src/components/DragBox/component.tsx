@@ -39,7 +39,7 @@ const DragBox: React.FC<DragBoxProps> = ({ x, y, onDrag }) => {
       }
       ref.current.releasePointerCapture(e.pointerId);
       setMoving(false);
-      onDrag(e.clientX, e.clientY);
+      // onDrag(e.clientX, e.clientY);
       e.stopPropagation();
       e.preventDefault();
     },
