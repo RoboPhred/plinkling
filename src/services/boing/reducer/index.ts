@@ -11,7 +11,8 @@ import createBouncerReducer from "./create-bouncer";
 import moveEmitterReducer from "./move-emitter";
 import moveBouncerReducer from "./move-bouncer";
 import setEmitterRateReducer from "./set-emitter-rate";
-import setSize from "./set-size";
+import setSizeReducer from "./set-size";
+import setGravityReducer from "./set-gravity";
 
 const childReducers = reduceReducers(
   tickEmittersReducer,
@@ -20,7 +21,8 @@ const childReducers = reduceReducers(
   moveEmitterReducer,
   moveBouncerReducer,
   setEmitterRateReducer,
-  setSize
+  setSizeReducer,
+  setGravityReducer
 );
 
 export default function reducer(

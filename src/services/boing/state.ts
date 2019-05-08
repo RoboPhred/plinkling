@@ -47,7 +47,7 @@ export const defaultBoingServiceState: Readonly<
   BoingServiceState
 > = Object.freeze({
   tick: 0,
-  gravity: VEC_ZERO, // gravity: { x: 0, y: 9.8 / SECOND_AS_MILLIS },
+  gravity: { x: 0, y: 9.8 / SECOND_AS_MILLIS },
   fieldMin: { x: 0, y: 0 },
   fieldMax: { x: 1000, y: 1000 },
   ballsById: {},

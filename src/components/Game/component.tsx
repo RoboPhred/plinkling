@@ -1,11 +1,12 @@
 import * as React from "react";
 import useComponentSize from "@rehooks/component-size";
 
-import { Vector2, VEC_ZERO } from "@/math";
+import { Vector2, VEC_ZERO, magnitude, subtract } from "@/math";
 
 import BallField from "../BallField";
 import BouncerField from "../BouncerField";
 import EmitterField from "../EmitterField";
+import GravitySlider from "../GravitySlider";
 
 export interface GameProps {
   className?: string;
@@ -44,7 +45,13 @@ const Game: React.FC<GameProps> = ({
       if (newBouncerStart == null) {
         return;
       }
-      onCreateBouncer(newBouncerStart, { x: e.clientX, y: e.clientY });
+      const newBouncerFinal = { x: e.clientX, y: e.clientY };
+      const length = Math.abs(
+        magnitude(subtract(newBouncerStart, newBouncerFinal))
+      );
+      if (length >= 50) {
+        onCreateBouncer(newBouncerStart, newBouncerFinal);
+      }
       setNewBouncerStart(null);
       setNewBouncerEnd(null);
       e.stopPropagation();
@@ -71,6 +78,7 @@ const Game: React.FC<GameProps> = ({
         onPointerMove={pointerMove}
         onPointerUp={pointerUp}
       >
+        <GravitySlider r={15} cx={size.width - 35} cy={size.height - 35} />
         <BallField />
         <BouncerField />
         <EmitterField />

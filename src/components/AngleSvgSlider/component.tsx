@@ -1,29 +1,13 @@
 import * as React from "react";
 import injectSheet from "react-jss";
 
-import { constrain, Vector2, vector, angle } from "@/math";
-
 import { createStyles, WithStyles } from "@/theme";
+import { VEC_X, Vector2, angle } from "@/math";
 
-/*
-This needs a serious cleanup.
-It was done in a few minutes on a trial and error basis.
-
-- Fix start angle and end angle being odd negative values.
-- Figure out the real logic for pointer move / angle to percentage.
-  Lots of arbitrary trial and error changes in there
-  Why does the starting angle need to be negated again?
-  Fix value latching to zero if angle is taken out of range.
-  Latch to max if slightly out of max range, and min if slightly
-  out of min range.
-*/
-
-export interface RadialSvgSliderProps {
+export interface AngleSvgSliderProps {
   cx: number;
   cy: number;
   r: number;
-  min: number;
-  max: number;
   value: number;
   onChange(value: number): void;
 }
@@ -34,23 +18,16 @@ const styles = createStyles({
   }
 });
 
-const startAngle = -Math.PI * (1 / 3);
-const endAngle = -Math.PI * (2 / 3);
-const range = Math.PI * 2 - Math.abs(endAngle - startAngle);
-
-type Props = RadialSvgSliderProps & WithStyles<typeof styles>;
-const RadialSvgSlider: React.FC<Props> = ({
+type Props = AngleSvgSliderProps & WithStyles<typeof styles>;
+const AngleSvgSlider: React.FC<Props> = ({
   cx,
   cy,
   r,
-  min,
-  max,
   value,
   classes,
   onChange
 }) => {
-  const percent = constrain((value - min) / (max - min), 0, 1);
-  const rootRef = React.useRef<SVGPathElement>(null);
+  const rootRef = React.useRef<SVGCircleElement>(null);
   const handleRef = React.useRef<SVGPathElement>(null);
   const [isPointerDown, setPointerDown] = React.useState(false);
   const onHandlePointerDown = React.useCallback(
@@ -70,23 +47,23 @@ const RadialSvgSlider: React.FC<Props> = ({
       if (!isPointerDown || !rootRef.current) {
         return;
       }
-
       const box = rootRef.current.getBoundingClientRect();
       const handleVec: Vector2 = {
         x: e.clientX - (box.left + box.width / 2),
-        y: e.clientY - (box.top + box.height / 2)
+        // up angle is to top of screen, which is negative in y direction
+        // We need to invert the y value to get the correct vector for angles.
+        // TODO: This issue probably appears elsewhere, check RadialSvgSlider
+        y: -(e.clientY - (box.top + box.height / 2))
       };
-      const relVec = vector(-startAngle, 1);
-      let handleAngle = angle(handleVec, relVec);
+      let handleAngle = angle(handleVec, VEC_X);
       if (handleAngle < 0) {
         handleAngle += Math.PI * 2;
       }
-      const percent = constrain(handleAngle / range, 0, 1);
-      onChange(min + (max - min) * percent);
+      onChange(handleAngle);
       e.preventDefault();
       e.stopPropagation();
     },
-    [isPointerDown, rootRef, min, max, onChange]
+    [isPointerDown, rootRef, onChange]
   );
   const onHandlePointerUp = React.useCallback(
     (e: React.PointerEvent<SVGPathElement>) => {
@@ -102,17 +79,19 @@ const RadialSvgSlider: React.FC<Props> = ({
   );
   return (
     <g>
-      <path
+      <circle
         ref={rootRef}
-        d={generatePath(cx, cy, r)}
-        stroke="dimgrey"
-        strokeWidth={2}
+        cx={cx}
+        cy={cy}
+        r={r}
+        stroke="grey"
         fill="none"
+        strokeWidth={1}
       />
       <path
-        className={classes.handle}
         ref={handleRef}
-        d={generateHandlePath(cx, cy, r, percent)}
+        className={classes.handle}
+        d={generateHandlePath(cx, cy, r, value)}
         stroke="red"
         strokeWidth={5}
         fill="none"
@@ -124,31 +103,14 @@ const RadialSvgSlider: React.FC<Props> = ({
   );
 };
 
-export default injectSheet(styles)(RadialSvgSlider);
-
-function generatePath(cx: number, cy: number, r: number): string {
-  return [
-    "M",
-    cx + Math.cos(startAngle) * r,
-    cy - Math.sin(startAngle) * r,
-    "A",
-    r,
-    r,
-    0,
-    1, //large
-    0,
-    cx + Math.cos(endAngle) * r,
-    cy - Math.sin(endAngle) * r
-  ].join(" ");
-}
+export default injectSheet(styles)(AngleSvgSlider);
 
 function generateHandlePath(
   cx: number,
   cy: number,
   r: number,
-  percent: number
+  angle: number
 ): string {
-  const angle = startAngle + range * percent;
   return [
     "M",
     cx + Math.cos(angle) * (r - 6),
