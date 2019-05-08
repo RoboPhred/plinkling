@@ -1,22 +1,9 @@
 import * as React from "react";
 import injectSheet from "react-jss";
 
-import { constrain, Vector2, vector, angle } from "@/math";
+import { constrain, Vector2, angle, VEC_X } from "@/math";
 
 import { createStyles, WithStyles } from "@/theme";
-
-/*
-This needs a serious cleanup.
-It was done in a few minutes on a trial and error basis.
-
-- Fix start angle and end angle being odd negative values.
-- Figure out the real logic for pointer move / angle to percentage.
-  Lots of arbitrary trial and error changes in there
-  Why does the starting angle need to be negated again?
-  Fix value latching to zero if angle is taken out of range.
-  Latch to max if slightly out of max range, and min if slightly
-  out of min range.
-*/
 
 export interface RadialSvgSliderProps {
   cx: number;
@@ -34,9 +21,9 @@ const styles = createStyles({
   }
 });
 
-const startAngle = -Math.PI * (1 / 3);
-const endAngle = -Math.PI * (2 / 3);
-const range = Math.PI * 2 - Math.abs(endAngle - startAngle);
+const startAngle = Math.PI * (1 / 3);
+const endAngle = Math.PI * (2 / 3);
+const range = Math.PI * 2 - (endAngle - startAngle);
 
 type Props = RadialSvgSliderProps & WithStyles<typeof styles>;
 const RadialSvgSlider: React.FC<Props> = ({
@@ -76,12 +63,12 @@ const RadialSvgSlider: React.FC<Props> = ({
         x: e.clientX - (box.left + box.width / 2),
         y: e.clientY - (box.top + box.height / 2)
       };
-      const relVec = vector(-startAngle, 1);
-      let handleAngle = angle(handleVec, relVec);
-      if (handleAngle < 0) {
-        handleAngle += Math.PI * 2;
+      const handleAngle = angle(VEC_X, handleVec);
+      let valueAngle = startAngle - handleAngle;
+      if (valueAngle < 0) {
+        valueAngle += Math.PI * 2;
       }
-      const percent = constrain(handleAngle / range, 0, 1);
+      const percent = constrain(valueAngle / range, 0, 1);
       onChange(min + (max - min) * percent);
       e.preventDefault();
       e.stopPropagation();
@@ -130,7 +117,7 @@ function generatePath(cx: number, cy: number, r: number): string {
   return [
     "M",
     cx + Math.cos(startAngle) * r,
-    cy - Math.sin(startAngle) * r,
+    cy + Math.sin(startAngle) * r,
     "A",
     r,
     r,
@@ -138,7 +125,7 @@ function generatePath(cx: number, cy: number, r: number): string {
     1, //large
     0,
     cx + Math.cos(endAngle) * r,
-    cy - Math.sin(endAngle) * r
+    cy + Math.sin(endAngle) * r
   ].join(" ");
 }
 
@@ -148,13 +135,13 @@ function generateHandlePath(
   r: number,
   percent: number
 ): string {
-  const angle = startAngle + range * percent;
+  const angle = startAngle - range * percent;
   return [
     "M",
     cx + Math.cos(angle) * (r - 6),
-    cy - Math.sin(angle) * (r - 6),
+    cy + Math.sin(angle) * (r - 6),
     "L",
     cx + Math.cos(angle) * (r + 6),
-    cy - Math.sin(angle) * (r + 6)
+    cy + Math.sin(angle) * (r + 6)
   ].join(" ");
 }
