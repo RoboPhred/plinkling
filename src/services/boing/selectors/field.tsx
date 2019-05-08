@@ -5,4 +5,4 @@ export const gravitySelector = (state: AppState) =>
   state.services.boing.gravity;
 
 export const gravityDirectionSelector = (state: AppState) =>
-  angle(gravitySelector(state), VEC_X);
+  angle(VEC_X, gravitySelector(state));

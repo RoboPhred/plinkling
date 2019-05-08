@@ -75,9 +75,10 @@ function tickBall(
   if (interceptData) {
     const { bouncerId, intercept } = interceptData;
     const bouncer = state.bouncersById[bouncerId];
+    const bouncerVec = subtract(bouncer.p2, bouncer.p1);
 
-    const interceptAngle = angle(subtract(bouncer.p2, bouncer.p1), movementVec);
-    const lineAngle = angle(VEC_X, subtract(bouncer.p2, bouncer.p1));
+    const interceptAngle = angle(bouncerVec, movementVec);
+    const lineAngle = angle(VEC_X, bouncerVec);
     const bounceAngle = lineAngle + (Math.PI - interceptAngle);
 
     let reflect = Math.abs(

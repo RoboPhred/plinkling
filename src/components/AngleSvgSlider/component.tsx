@@ -27,6 +27,7 @@ const AngleSvgSlider: React.FC<Props> = ({
   classes,
   onChange
 }) => {
+  console.log(value);
   const rootRef = React.useRef<SVGCircleElement>(null);
   const handleRef = React.useRef<SVGPathElement>(null);
   const [isPointerDown, setPointerDown] = React.useState(false);
@@ -50,12 +51,9 @@ const AngleSvgSlider: React.FC<Props> = ({
       const box = rootRef.current.getBoundingClientRect();
       const handleVec: Vector2 = {
         x: e.clientX - (box.left + box.width / 2),
-        // up angle is to top of screen, which is negative in y direction
-        // We need to invert the y value to get the correct vector for angles.
-        // TODO: This issue probably appears elsewhere, check RadialSvgSlider
-        y: -(e.clientY - (box.top + box.height / 2))
+        y: e.clientY - (box.top + box.height / 2)
       };
-      let handleAngle = angle(handleVec, VEC_X);
+      let handleAngle = angle(VEC_X, handleVec);
       if (handleAngle < 0) {
         handleAngle += Math.PI * 2;
       }
@@ -86,7 +84,7 @@ const AngleSvgSlider: React.FC<Props> = ({
         r={r}
         stroke="grey"
         fill="none"
-        strokeWidth={1}
+        strokeWidth={2}
       />
       <path
         ref={handleRef}
@@ -114,9 +112,9 @@ function generateHandlePath(
   return [
     "M",
     cx + Math.cos(angle) * (r - 6),
-    cy - Math.sin(angle) * (r - 6),
+    cy + Math.sin(angle) * (r - 6),
     "L",
     cx + Math.cos(angle) * (r + 6),
-    cy - Math.sin(angle) * (r + 6)
+    cy + Math.sin(angle) * (r + 6)
   ].join(" ");
 }

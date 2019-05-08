@@ -23,7 +23,7 @@ export default function setGravityReducer(
     const { strength } = action.payload;
     return {
       ...state,
-      gravity: vector(angle(state.gravity, VEC_X), strength)
+      gravity: vector(angle(VEC_X, state.gravity), strength)
     };
   }
 
