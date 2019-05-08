@@ -3,8 +3,15 @@ This should be kept minimal and only provide globals
 or non-react component styles.
 */
 
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   margin: 0;
+  /*
+  Chrome is showing a rogue scroll bar, possibly due to the svg element.
+  All sizes are equal to the browser size, but a rogue margin appears along the bottom edge
+  */
+  overflow: hidden;
 }
