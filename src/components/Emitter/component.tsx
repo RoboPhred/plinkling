@@ -6,10 +6,17 @@ import CircularSvgSlider from "@/components/CircularSvgSlider";
 
 export interface EmitterProps {
   position: Vector2;
+  rate: number;
   onMove(x: number, y: number): void;
+  onSetRate(rate: number): void;
 }
 
-const Emitter: React.FC<EmitterProps> = ({ position, onMove }) => {
+const Emitter: React.FC<EmitterProps> = ({
+  position,
+  rate,
+  onMove,
+  onSetRate
+}) => {
   const ref = React.useRef<SVGCircleElement>(null);
   const [isMoving, setMoving] = React.useState(false);
   const pointerDown = React.useCallback(
@@ -64,10 +71,10 @@ const Emitter: React.FC<EmitterProps> = ({ position, onMove }) => {
         cy={0}
         r={15}
         text="test"
-        min={0}
-        max={100}
-        value={50}
-        onChange={() => {}}
+        min={250}
+        max={3000}
+        value={rate}
+        onChange={onSetRate}
       />
     </g>
   );
