@@ -18,11 +18,10 @@ It was done in a few minutes on a trial and error basis.
   out of min range.
 */
 
-export interface CircularSvgSliderProps {
+export interface RadialSvgSliderProps {
   cx: number;
   cy: number;
   r: number;
-  text: string;
   min: number;
   max: number;
   value: number;
@@ -39,8 +38,8 @@ const startAngle = -Math.PI * (1 / 3);
 const endAngle = -Math.PI * (2 / 3);
 const range = Math.PI * 2 - Math.abs(endAngle - startAngle);
 
-type Props = CircularSvgSliderProps & WithStyles<typeof styles>;
-const CircularSvgSlider: React.FC<Props> = ({
+type Props = RadialSvgSliderProps & WithStyles<typeof styles>;
+const RadialSvgSlider: React.FC<Props> = ({
   cx,
   cy,
   r,
@@ -129,7 +128,7 @@ const CircularSvgSlider: React.FC<Props> = ({
   );
 };
 
-export default injectSheet(styles)(CircularSvgSlider);
+export default injectSheet(styles)(RadialSvgSlider);
 
 function generatePath(cx: number, cy: number, r: number): string {
   return [

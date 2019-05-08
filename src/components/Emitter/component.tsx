@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Vector2 } from "@/math";
 
-import CircularSvgSlider from "@/components/CircularSvgSlider";
+import RadialSvgSlider from "@/components/RadialSvgSlider";
 
 export interface EmitterProps {
   position: Vector2;
@@ -66,11 +66,10 @@ const Emitter: React.FC<EmitterProps> = ({
         onPointerMove={pointerMove}
         onPointerUp={pointerUp}
       />
-      <CircularSvgSlider
+      <RadialSvgSlider
         cx={0}
         cy={0}
         r={15}
-        text="test"
         min={250}
         max={3000}
         value={rate}
