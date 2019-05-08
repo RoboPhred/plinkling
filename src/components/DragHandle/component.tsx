@@ -3,7 +3,7 @@ import injectSheet from "react-jss";
 
 import { createStyles, WithStyles } from "@/theme";
 
-export interface DragBoxProps {
+export interface DragHandleProps {
   x: number;
   y: number;
   onDrag(x: number, y: number): void;
@@ -15,12 +15,12 @@ const styles = createStyles({
   }
 });
 
-type Props = DragBoxProps & WithStyles<typeof styles>;
-const DragBox: React.FC<Props> = ({ x, y, classes, onDrag }) => {
-  const ref = React.useRef<SVGRectElement>(null);
+type Props = DragHandleProps & WithStyles<typeof styles>;
+const DragHandle: React.FC<Props> = ({ x, y, classes, onDrag }) => {
+  const ref = React.useRef<SVGCircleElement>(null);
   const [isMoving, setMoving] = React.useState(false);
   const pointerDown = React.useCallback(
-    (e: React.PointerEvent<SVGRectElement>) => {
+    (e: React.PointerEvent<SVGCircleElement>) => {
       if (!ref.current) {
         return;
       }
@@ -32,7 +32,7 @@ const DragBox: React.FC<Props> = ({ x, y, classes, onDrag }) => {
     [ref, setMoving]
   );
   const pointerMove = React.useCallback(
-    (e: React.PointerEvent<SVGRectElement>) => {
+    (e: React.PointerEvent<SVGCircleElement>) => {
       if (!isMoving) {
         return false;
       }
@@ -43,7 +43,7 @@ const DragBox: React.FC<Props> = ({ x, y, classes, onDrag }) => {
     [isMoving]
   );
   const pointerUp = React.useCallback(
-    (e: React.PointerEvent<SVGRectElement>) => {
+    (e: React.PointerEvent<SVGCircleElement>) => {
       if (!ref.current) {
         return;
       }
@@ -55,13 +55,12 @@ const DragBox: React.FC<Props> = ({ x, y, classes, onDrag }) => {
     [ref, setMoving]
   );
   return (
-    <rect
+    <circle
       className={classes.rect}
       ref={ref}
-      x={x - 6}
-      y={y - 6}
-      width={12}
-      height={12}
+      cx={x}
+      cy={y}
+      r={6}
       fill="darkgrey"
       onPointerDown={pointerDown}
       onPointerMove={pointerMove}
@@ -70,4 +69,4 @@ const DragBox: React.FC<Props> = ({ x, y, classes, onDrag }) => {
   );
 };
 
-export default injectSheet(styles)(DragBox);
+export default injectSheet(styles)(DragHandle);

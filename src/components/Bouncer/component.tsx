@@ -3,7 +3,7 @@ import * as React from "react";
 import Tone from "@/tone";
 import { Vector2, constrain, length } from "@/math";
 
-import DragBox from "../DragBox";
+import DragHandle from "../DragHandle";
 
 const synth = new Tone.PolySynth(6, Tone.AMSynth).toMaster();
 
@@ -43,8 +43,8 @@ const Bouncer: React.FC<BouncerProps> = ({
   return (
     <g>
       <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} stroke="black" />
-      <DragBox x={p1.x} y={p1.y} onDrag={onP1Move} />
-      <DragBox x={p2.x} y={p2.y} onDrag={onP2Move} />
+      <DragHandle x={p1.x} y={p1.y} onDrag={onP1Move} />
+      <DragHandle x={p2.x} y={p2.y} onDrag={onP2Move} />
     </g>
   );
 };
