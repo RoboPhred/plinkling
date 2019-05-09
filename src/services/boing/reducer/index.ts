@@ -11,6 +11,7 @@ import createBouncerReducer from "./create-bouncer";
 import moveEmitterReducer from "./move-emitter";
 import moveBouncerReducer from "./move-bouncer";
 import setEmitterRateReducer from "./set-emitter-rate";
+import setEmitterVelocityReducer from "./set-emitter-velocity";
 import setSizeReducer from "./set-size";
 import setGravityReducer from "./set-gravity";
 
@@ -21,6 +22,7 @@ const childReducers = reduceReducers(
   moveEmitterReducer,
   moveBouncerReducer,
   setEmitterRateReducer,
+  setEmitterVelocityReducer,
   setSizeReducer,
   setGravityReducer
 );

@@ -3,68 +3,45 @@ import * as React from "react";
 import { Vector2 } from "@/math";
 
 import RadialSvgSlider from "@/components/RadialSvgSlider";
+import usePointerDrag, { DragEvent } from "@/hooks/use-pointer-drag";
+import AngleSvgSlider from "../AngleSvgSlider";
 
 export interface EmitterProps {
   position: Vector2;
   rate: number;
+  angle: number;
   onMove(x: number, y: number): void;
   onSetRate(rate: number): void;
+  onSetDirection(angle: number): void;
 }
 
 const Emitter: React.FC<EmitterProps> = ({
   position,
   rate,
+  angle,
   onMove,
-  onSetRate
+  onSetRate,
+  onSetDirection
 }) => {
-  const ref = React.useRef<SVGCircleElement>(null);
-  const [isMoving, setMoving] = React.useState(false);
-  const pointerDown = React.useCallback(
-    (e: React.PointerEvent<SVGCircleElement>) => {
-      if (!ref.current) {
-        return;
-      }
-      ref.current.setPointerCapture(e.pointerId);
-      setMoving(true);
-      e.stopPropagation();
-      e.preventDefault();
-    },
-    [ref, setMoving]
-  );
-  const pointerMove = React.useCallback(
-    (e: React.PointerEvent<SVGCircleElement>) => {
-      if (!isMoving) {
-        return false;
-      }
+  const onDragMove = React.useCallback(
+    (e: DragEvent) => {
       onMove(e.clientX, e.clientY);
-      e.stopPropagation();
-      e.preventDefault();
     },
-    [isMoving]
+    [onMove]
   );
-  const pointerUp = React.useCallback(
-    (e: React.PointerEvent<SVGCircleElement>) => {
-      if (!ref.current) {
-        return;
-      }
-      ref.current.releasePointerCapture(e.pointerId);
-      setMoving(false);
-      e.stopPropagation();
-      e.preventDefault();
-    },
-    [ref, setMoving]
-  );
+
+  const dragMove = usePointerDrag(null, onDragMove);
+
   return (
     <g transform={`translate(${position.x}, ${position.y})`}>
       <circle
-        ref={ref}
         fill="grey"
         r={5}
         cx={0}
         cy={0}
-        onPointerDown={pointerDown}
-        onPointerMove={pointerMove}
-        onPointerUp={pointerUp}
+        onPointerDown={dragMove.pointerDown}
+        onPointerMove={dragMove.pointerMove}
+        onPointerUp={dragMove.pointerUp}
       />
       <RadialSvgSlider
         cx={0}
@@ -74,6 +51,13 @@ const Emitter: React.FC<EmitterProps> = ({
         max={3000}
         value={rate}
         onChange={onSetRate}
+      />
+      <AngleSvgSlider
+        cx={0}
+        cy={0}
+        r={30}
+        value={angle}
+        onChange={onSetDirection}
       />
     </g>
   );

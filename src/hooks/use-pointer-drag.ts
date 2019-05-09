@@ -24,7 +24,7 @@ export interface UsePointerEvents {
 }
 
 export default function usePointerDrag(
-  onDragComplete: (e: DragEvent) => void,
+  onDragComplete: ((e: DragEvent) => void) | null,
   onMove?: (e: DragEvent) => void
 ) {
   const [mouseDown, setMouseDown] = React.useState<Vector2 | null>(null);
@@ -70,17 +70,19 @@ export default function usePointerDrag(
       e.currentTarget.releasePointerCapture(e.pointerId);
 
       if (mouseDown) {
-        const ev: DragEvent = {
-          start: {
-            clientX: mouseDown.x,
-            clientY: mouseDown.y
-          },
-          clientX: e.clientX,
-          clientY: e.clientY,
-          dX: e.clientX - mouseDown.x,
-          dY: e.clientY - mouseDown.y
-        };
-        onDragComplete(ev);
+        if (onDragComplete) {
+          const ev: DragEvent = {
+            start: {
+              clientX: mouseDown.x,
+              clientY: mouseDown.y
+            },
+            clientX: e.clientX,
+            clientY: e.clientY,
+            dX: e.clientX - mouseDown.x,
+            dY: e.clientY - mouseDown.y
+          };
+          onDragComplete(ev);
+        }
 
         setMouseDown(null);
 
