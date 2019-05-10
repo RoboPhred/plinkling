@@ -2,6 +2,9 @@ export interface Vector2 {
   x: number;
   y: number;
 }
+export function isVector2(val: any): val is Vector2 {
+  return typeof val.x === "number" && typeof val.y === "number";
+}
 
 // It might simplify intercept calculations to store the line
 //  as a starting point, angle, and length

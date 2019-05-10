@@ -27,7 +27,6 @@ const AngleSvgSlider: React.FC<Props> = ({
   classes,
   onChange
 }) => {
-  console.log(value);
   const rootRef = React.useRef<SVGCircleElement>(null);
   const handleRef = React.useRef<SVGPathElement>(null);
   const [isPointerDown, setPointerDown] = React.useState(false);

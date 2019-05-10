@@ -1,10 +1,14 @@
 import * as React from "react";
+import injectSheets from "react-jss";
 
 import { Vector2 } from "@/math";
+import { createStyles, WithStyles } from "@/theme";
 
-import RadialSvgSlider from "@/components/RadialSvgSlider";
 import usePointerDrag, { DragEvent } from "@/hooks/use-pointer-drag";
+
+import RadialSvgSlider from "../RadialSvgSlider";
 import AngleSvgSlider from "../AngleSvgSlider";
+import MouseReveal from "../MouseReveal";
 
 export interface EmitterProps {
   position: Vector2;
@@ -15,7 +19,15 @@ export interface EmitterProps {
   onSetDirection(angle: number): void;
 }
 
-const Emitter: React.FC<EmitterProps> = ({
+const styles = createStyles({
+  circle: {
+    cursor: "pointer"
+  }
+});
+
+type Props = EmitterProps & WithStyles<typeof styles>;
+const Emitter: React.FC<Props> = ({
+  classes,
   position,
   rate,
   angle,
@@ -23,6 +35,8 @@ const Emitter: React.FC<EmitterProps> = ({
   onSetRate,
   onSetDirection
 }) => {
+  const ref = React.useRef<SVGCircleElement>(null);
+
   const onDragMove = React.useCallback(
     (e: DragEvent) => {
       onMove(e.clientX, e.clientY);
@@ -35,6 +49,8 @@ const Emitter: React.FC<EmitterProps> = ({
   return (
     <g transform={`translate(${position.x}, ${position.y})`}>
       <circle
+        className={classes.circle}
+        ref={ref}
         fill="grey"
         r={5}
         cx={0}
@@ -43,24 +59,26 @@ const Emitter: React.FC<EmitterProps> = ({
         onPointerMove={dragMove.pointerMove}
         onPointerUp={dragMove.pointerUp}
       />
-      <RadialSvgSlider
-        cx={0}
-        cy={0}
-        r={15}
-        min={250}
-        max={3000}
-        value={rate}
-        onChange={onSetRate}
-      />
-      <AngleSvgSlider
-        cx={0}
-        cy={0}
-        r={30}
-        value={angle}
-        onChange={onSetDirection}
-      />
+      <MouseReveal originRef={ref}>
+        <RadialSvgSlider
+          cx={0}
+          cy={0}
+          r={15}
+          min={250}
+          max={3000}
+          value={rate}
+          onChange={onSetRate}
+        />
+        <AngleSvgSlider
+          cx={0}
+          cy={0}
+          r={30}
+          value={angle}
+          onChange={onSetDirection}
+        />
+      </MouseReveal>
     </g>
   );
 };
 
-export default Emitter;
+export default injectSheets(styles)(Emitter);

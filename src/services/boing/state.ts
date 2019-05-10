@@ -56,7 +56,7 @@ export const defaultBoingServiceState: Readonly<
       ...defaultEmitterState,
       id: "a",
       position: { x: 100, y: 100 },
-      velocity: { x: 5, y: 0 },
+      velocity: { x: 0, y: 5 },
       rate: 1000
     }
   },
@@ -65,12 +65,12 @@ export const defaultBoingServiceState: Readonly<
       ...defaultBouncerState,
       id: "b",
       p1: {
-        x: 300,
-        y: 50
+        x: 50,
+        y: 400
       },
       p2: {
-        x: 300,
-        y: 150
+        x: 150,
+        y: 500
       }
     }
   }

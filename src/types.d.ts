@@ -3,3 +3,5 @@ interface Window {
 }
 
 declare module "tone";
+
+declare module "*.svg";

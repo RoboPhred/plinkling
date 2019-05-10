@@ -5,6 +5,7 @@ import { BoingServiceState, defaultBoingServiceState } from "../state";
 
 import { isTickAction } from "../actions/tick";
 
+import reset from "./reset";
 import tickEmittersReducer from "./tick-emitters";
 import tickBallsReducer from "./tick-balls";
 import createBouncerReducer from "./create-bouncer";
@@ -16,6 +17,7 @@ import setSizeReducer from "./set-size";
 import setGravityReducer from "./set-gravity";
 
 const childReducers = reduceReducers(
+  reset,
   tickEmittersReducer,
   tickBallsReducer,
   createBouncerReducer,

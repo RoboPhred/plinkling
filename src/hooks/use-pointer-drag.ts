@@ -25,12 +25,17 @@ export interface UsePointerEvents {
 
 export default function usePointerDrag(
   onDragComplete: ((e: DragEvent) => void) | null,
-  onMove?: (e: DragEvent) => void
+  onMove?: (e: DragEvent) => void,
+  shouldCapture?: (target: EventTarget) => boolean
 ) {
   const [mouseDown, setMouseDown] = React.useState<Vector2 | null>(null);
   const [mouseMove, setMouseMove] = React.useState<Vector2 | null>(null);
 
   const pointerDown = React.useCallback((e: React.PointerEvent<Element>) => {
+    if (shouldCapture && !shouldCapture(e.target)) {
+      return;
+    }
+
     setMouseDown({ x: e.clientX, y: e.clientY });
     e.currentTarget.setPointerCapture(e.pointerId);
 
@@ -85,6 +90,7 @@ export default function usePointerDrag(
         }
 
         setMouseDown(null);
+        setMouseMove(null);
 
         e.preventDefault();
         e.stopPropagation();

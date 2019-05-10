@@ -82,7 +82,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(ttf|eot|svg)$/,
+        test: /\.(ttf|eot)$/,
         use: {
           loader: "file-loader",
           options: {
@@ -92,7 +92,7 @@ module.exports = {
       },
 
       {
-        test: /\.png/,
+        test: /\.(png|svg)/,
         loader: "file-loader",
         options: {
           name: "images/[hash].[ext]"
