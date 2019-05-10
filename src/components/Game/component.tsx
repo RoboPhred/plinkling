@@ -38,7 +38,7 @@ const Game: React.FC<Props> = ({
 }) => {
   const [started, setStarted] = React.useState(false);
   const rootRef = React.useRef(null);
-  const svgRef = React.useRef(null);
+  const bouncerDragRef = React.useRef(null);
 
   const onStart = React.useCallback(() => {
     setStarted(true);
@@ -60,7 +60,7 @@ const Game: React.FC<Props> = ({
   const createBouncer = usePointerDrag(
     createBouncerDragRelease,
     undefined,
-    target => target === svgRef.current
+    target => target === bouncerDragRef.current
   );
 
   const [oldSize, setOldSize] = React.useState(VEC_ZERO);
@@ -73,15 +73,20 @@ const Game: React.FC<Props> = ({
   return (
     <div className={className} ref={rootRef}>
       <svg
-        ref={svgRef}
         className={classes.svg}
         width={`${size.width}`}
         height={`${size.height}`}
         viewBox={`0 0 ${size.width} ${size.height}`}
-        onPointerDown={createBouncer.pointerDown}
-        onPointerMove={createBouncer.pointerMove}
-        onPointerUp={createBouncer.pointerUp}
       >
+        <rect
+          ref={bouncerDragRef}
+          width={size.width}
+          height={size.height}
+          fill="lightgrey"
+          onPointerDown={createBouncer.pointerDown}
+          onPointerMove={createBouncer.pointerMove}
+          onPointerUp={createBouncer.pointerUp}
+        />
         <GravityDirectionSlider
           r={15}
           cx={size.width - 35}
