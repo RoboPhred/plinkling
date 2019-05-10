@@ -1,8 +1,10 @@
 import * as React from "react";
 import useComponentSize from "@rehooks/component-size";
-import injectSheets from "react-jss";
+import injectSheet from "react-jss";
 
 import { createStyles, WithStyles } from "@/theme";
+
+import { init } from "@/tone";
 
 import { Vector2, VEC_ZERO, magnitude, subtract } from "@/math";
 
@@ -13,6 +15,7 @@ import BouncerField from "../BouncerField";
 import EmitterField from "../EmitterField";
 import GravityDirectionSlider from "../GravityDirectionSlider";
 import ResetButton from "../ResetButton";
+import PlayButton from "../PlayButton";
 
 export interface GameProps {
   className?: string;
@@ -33,8 +36,14 @@ const Game: React.FC<Props> = ({
   onCreateBouncer,
   onResize
 }) => {
+  const [started, setStarted] = React.useState(false);
   const rootRef = React.useRef(null);
   const svgRef = React.useRef(null);
+
+  const onStart = React.useCallback(() => {
+    setStarted(true);
+    init();
+  }, []);
 
   const createBouncerDragRelease = React.useCallback(
     (e: DragEvent) => {
@@ -91,8 +100,26 @@ const Game: React.FC<Props> = ({
             stroke="darkgrey"
           />
         )}
+
+        {!started && (
+          <g>
+            <rect
+              x={0}
+              y={0}
+              width={size.width}
+              height={size.height}
+              opacity={0.4}
+              fill="dimgrey"
+            />
+            <PlayButton
+              x={size.width / 2 - 128}
+              y={size.height / 2 - 128}
+              onClick={onStart}
+            />
+          </g>
+        )}
       </svg>
     </div>
   );
 };
-export default injectSheets(styles)(Game);
+export default injectSheet(styles)(Game);

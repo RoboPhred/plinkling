@@ -1,12 +1,10 @@
 import * as React from "react";
 
-import Tone from "@/tone";
+import playTone from "@/tone";
 import { Vector2, constrain, length, subtract, add } from "@/math";
 
 import DragHandle from "../DragHandle";
 import MouseReveal from "../MouseReveal";
-
-const synth = new Tone.PolySynth(6, Tone.AMSynth).toMaster();
 
 export interface BouncerProps {
   toneTriggerTimestamp: number;
@@ -26,7 +24,7 @@ const Bouncer: React.FC<BouncerProps> = ({
     setLastTone(toneTriggerTimestamp);
     const l = length({ p1, p2 });
     const tone = getTone(l);
-    synth.triggerAttackRelease(tone, "32n");
+    playTone(tone, "32n");
   }
 
   const onP1Move = React.useCallback(

@@ -1,5 +1,5 @@
 import * as React from "react";
-import injectSheets from "react-jss";
+import injectSheet from "react-jss";
 
 import { Vector2 } from "@/math";
 import { createStyles, WithStyles } from "@/theme";
@@ -81,4 +81,4 @@ const Emitter: React.FC<Props> = ({
   );
 };
 
-export default injectSheets(styles)(Emitter);
+export default injectSheet(styles)(Emitter);

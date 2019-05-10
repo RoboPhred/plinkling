@@ -1,5 +1,5 @@
 import * as React from "react";
-import injectSheets from "react-jss";
+import injectSheet from "react-jss";
 
 import { createStyles, WithStyles } from "@/theme";
 
@@ -37,4 +37,4 @@ const ResetButton: React.FC<Props> = ({ classes, x, y, onClick }) => (
   </svg>
 );
 
-export default injectSheets(styles)(ResetButton);
+export default injectSheet(styles)(ResetButton);
