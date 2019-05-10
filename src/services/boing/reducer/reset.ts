@@ -7,7 +7,14 @@ export default function resetReducer(
   action: AnyAction
 ): BoingServiceState {
   if (isResetAction(action)) {
-    return defaultBoingServiceState;
+    return {
+      ...state,
+      tick: 0,
+      gravity: defaultBoingServiceState.gravity,
+      emittersById: defaultBoingServiceState.emittersById,
+      ballsById: {},
+      bouncersById: {}
+    };
   }
   return state;
 }
