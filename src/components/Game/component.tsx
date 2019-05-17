@@ -8,6 +8,7 @@ import { init } from "@/tone";
 
 import { Vector2, VEC_ZERO, magnitude, subtract } from "@/math";
 
+import GameFieldContext from "@/contexts/game-field";
 import usePointerDrag, { DragEvent } from "@/hooks/use-pointer-drag";
 
 import BallField from "../BallField";
@@ -38,6 +39,7 @@ const Game: React.FC<Props> = ({
 }) => {
   const [started, setStarted] = React.useState(false);
   const rootRef = React.useRef(null);
+  const svgRef = React.useRef<SVGSVGElement | null>(null);
   const bouncerDragRef = React.useRef(null);
 
   const onStart = React.useCallback(() => {
@@ -73,56 +75,59 @@ const Game: React.FC<Props> = ({
   return (
     <div className={className} ref={rootRef}>
       <svg
+        ref={svgRef}
         className={classes.svg}
         width={`${size.width}`}
         height={`${size.height}`}
         viewBox={`0 0 ${size.width} ${size.height}`}
       >
-        <rect
-          ref={bouncerDragRef}
-          width={size.width}
-          height={size.height}
-          fill="lightgrey"
-          onPointerDown={createBouncer.pointerDown}
-          onPointerMove={createBouncer.pointerMove}
-          onPointerUp={createBouncer.pointerUp}
-        />
-        <GravityDirectionSlider
-          r={15}
-          cx={size.width - 35}
-          cy={size.height - 35}
-        />
-        <ResetButton x={15} y={size.height - 35} onClick={() => {}} />
-        <BallField />
-        <BouncerField />
-        <EmitterField />
-        {createBouncer.start && createBouncer.end && (
-          <line
-            x1={createBouncer.start.clientX}
-            y1={createBouncer.start.clientY}
-            x2={createBouncer.end.clientX}
-            y2={createBouncer.end.clientY}
-            stroke="darkgrey"
+        <GameFieldContext.Provider value={svgRef.current}>
+          <rect
+            ref={bouncerDragRef}
+            width={size.width}
+            height={size.height}
+            fill="lightgrey"
+            onPointerDown={createBouncer.pointerDown}
+            onPointerMove={createBouncer.pointerMove}
+            onPointerUp={createBouncer.pointerUp}
           />
-        )}
+          <GravityDirectionSlider
+            r={15}
+            cx={size.width - 35}
+            cy={size.height - 35}
+          />
+          <ResetButton x={15} y={size.height - 35} onClick={() => {}} />
+          <BallField />
+          <BouncerField />
+          <EmitterField />
+          {createBouncer.start && createBouncer.end && (
+            <line
+              x1={createBouncer.start.clientX}
+              y1={createBouncer.start.clientY}
+              x2={createBouncer.end.clientX}
+              y2={createBouncer.end.clientY}
+              stroke="darkgrey"
+            />
+          )}
 
-        {!started && (
-          <g>
-            <rect
-              x={0}
-              y={0}
-              width={size.width}
-              height={size.height}
-              opacity={0.4}
-              fill="dimgrey"
-            />
-            <PlayButton
-              x={size.width / 2 - 128}
-              y={size.height / 2 - 128}
-              onClick={onStart}
-            />
-          </g>
-        )}
+          {!started && (
+            <g>
+              <rect
+                x={0}
+                y={0}
+                width={size.width}
+                height={size.height}
+                opacity={0.4}
+                fill="dimgrey"
+              />
+              <PlayButton
+                x={size.width / 2 - 128}
+                y={size.height / 2 - 128}
+                onClick={onStart}
+              />
+            </g>
+          )}
+        </GameFieldContext.Provider>
       </svg>
     </div>
   );

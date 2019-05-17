@@ -1,24 +1,17 @@
 import * as React from "react";
-import { magnitude, Vector2, isVector2 } from "@/math";
+import { magnitude, Vector2 } from "@/math";
+
+import useGameCoords from "./use-game-coords";
 
 export function useMouseDistance(
-  ref: React.RefObject<Element | null> | Vector2,
+  origin: Vector2,
   onMouseDistanceChanged: (distance: number) => void
 ) {
+  const getGameCoords = useGameCoords();
   React.useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      let origin: Vector2;
-      if (isVector2(ref)) {
-        origin = ref;
-      } else {
-        if (!ref.current) {
-          return;
-        }
-        const rect = ref.current.getBoundingClientRect();
-        origin = { x: rect.left, y: rect.top };
-      }
-
-      const vec = { x: e.clientX - origin.x, y: e.clientY - origin.y };
+      const pt = getGameCoords({ x: e.clientX, y: e.clientY });
+      const vec = { x: pt.x - origin.x, y: pt.y - origin.y };
       const length = magnitude(vec);
       onMouseDistanceChanged(length);
     };
@@ -28,5 +21,5 @@ export function useMouseDistance(
     return () => {
       document.removeEventListener("mousemove", onMouseMove);
     };
-  }, [ref, onMouseDistanceChanged]);
+  }, [origin, onMouseDistanceChanged, getGameCoords]);
 }

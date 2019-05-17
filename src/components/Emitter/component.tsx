@@ -5,6 +5,7 @@ import { Vector2 } from "@/math";
 import { createStyles, WithStyles } from "@/theme";
 
 import usePointerDrag, { DragEvent } from "@/hooks/use-pointer-drag";
+import useGameCoords from "@/hooks/use-game-coords";
 
 import RadialSvgSlider from "../RadialSvgSlider";
 import AngleSvgSlider from "../AngleSvgSlider";
@@ -35,13 +36,14 @@ const Emitter: React.FC<Props> = ({
   onSetRate,
   onSetDirection
 }) => {
-  const ref = React.useRef<SVGCircleElement>(null);
+  const getGameCoords = useGameCoords();
 
   const onDragMove = React.useCallback(
     (e: DragEvent) => {
-      onMove(e.clientX, e.clientY);
+      const pt = getGameCoords({ x: e.clientX, y: e.clientY });
+      onMove(pt.x, pt.y);
     },
-    [onMove]
+    [onMove, getGameCoords]
   );
 
   const dragMove = usePointerDrag(null, onDragMove);
@@ -50,7 +52,6 @@ const Emitter: React.FC<Props> = ({
     <g transform={`translate(${position.x}, ${position.y})`}>
       <circle
         className={classes.circle}
-        ref={ref}
         fill="grey"
         r={5}
         cx={0}
@@ -59,7 +60,7 @@ const Emitter: React.FC<Props> = ({
         onPointerMove={dragMove.pointerMove}
         onPointerUp={dragMove.pointerUp}
       />
-      <MouseReveal originRef={ref}>
+      <MouseReveal originVec={position}>
         <RadialSvgSlider
           cx={0}
           cy={0}

@@ -3,6 +3,8 @@ import injectSheet from "react-jss";
 
 import { createStyles, WithStyles } from "@/theme";
 
+import useGameCoords from "@/hooks/use-game-coords";
+
 export interface DragHandleProps {
   x: number;
   y: number;
@@ -19,6 +21,7 @@ type Props = DragHandleProps & WithStyles<typeof styles>;
 const DragHandle: React.FC<Props> = ({ x, y, classes, onDrag }) => {
   const ref = React.useRef<SVGCircleElement>(null);
   const [isMoving, setMoving] = React.useState(false);
+  const getGameCoords = useGameCoords();
   const pointerDown = React.useCallback(
     (e: React.PointerEvent<SVGCircleElement>) => {
       if (!ref.current) {
@@ -36,7 +39,8 @@ const DragHandle: React.FC<Props> = ({ x, y, classes, onDrag }) => {
       if (!isMoving) {
         return false;
       }
-      onDrag(e.clientX, e.clientY);
+      let v = getGameCoords({ x: e.clientX, y: e.clientY });
+      onDrag(v.x, v.y);
       e.stopPropagation();
       e.preventDefault();
     },

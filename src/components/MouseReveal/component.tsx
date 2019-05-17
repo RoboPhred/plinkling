@@ -4,22 +4,15 @@ import { Vector2 } from "@/math";
 import { useMouseDistance } from "@/hooks/use-mouse-distance";
 
 export interface MouseRevealProps {
-  originRef?: React.RefObject<Element | null>;
-  originVec?: Vector2;
+  originVec: Vector2;
   revealDistance?: number;
 }
 
 const MouseReveal: React.FC<MouseRevealProps> = ({
-  originRef,
   originVec,
   revealDistance = 50,
   children
 }) => {
-  if (!originRef && !originVec) {
-    console.warn("MouseReveal requires originRef or originVec");
-    return <React.Fragment />;
-  }
-
   const [mouseInRange, setMouseInRange] = React.useState(false);
   const onMouseDistance = React.useCallback(
     (length: number) => {
@@ -31,7 +24,7 @@ const MouseReveal: React.FC<MouseRevealProps> = ({
     },
     [mouseInRange]
   );
-  useMouseDistance((originRef || originVec) as any, onMouseDistance);
+  useMouseDistance(originVec, onMouseDistance);
 
   return <React.Fragment>{mouseInRange && children}</React.Fragment>;
 };
