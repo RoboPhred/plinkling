@@ -3,8 +3,8 @@ import { takeEvery, put } from "redux-saga/effects";
 
 import { tick } from "@/services/boing/actions/tick";
 
-// Allowing us to calculate the offset seems to cause crazyness,
-//  rounding errors?
+// Allowing us to calculate the offset causes rounding errors which make
+// the balls unpredictable over large constructs
 const FIXED_TIME = true;
 
 export default function* tickSaga() {
@@ -17,12 +17,12 @@ function* onTick(elapsedMillis: number) {
 
 function interval(delayMillis: number) {
   let previous = Date.now();
-  return eventChannel(emitter => {
+  return eventChannel((emitter) => {
     const iv = setInterval(() => {
       const current = Date.now();
       const elapsed = current - previous;
-      emitter(FIXED_TIME ? 10 : elapsed);
-      previous - current;
+      emitter(FIXED_TIME ? delayMillis : elapsed);
+      previous = current;
     }, delayMillis);
     return () => {
       clearInterval(iv);
